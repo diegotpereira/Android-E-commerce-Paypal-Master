@@ -12,11 +12,15 @@ import android.widget.Toast;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import br.com.android_e_commerce_paypal_master.R;
+import br.com.android_e_commerce_paypal_master.db.model.User;
 import br.com.android_e_commerce_paypal_master.networking.model.LoginRequest;
 import br.com.android_e_commerce_paypal_master.ui.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends BaseActivity {
 
@@ -63,6 +67,22 @@ public class LoginActivity extends BaseActivity {
         request.email = email;
         request.senha = senha;
 
-        getApi().login(request).en
+        getApi().login(request).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                loader.setVisibility(View.INVISIBLE);
+
+                if (!response.isSuccessful()) {
+                    handleError(response.errorBody());
+
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
     }
 }
