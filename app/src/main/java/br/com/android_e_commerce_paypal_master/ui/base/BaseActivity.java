@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.databinding.DataBindingUtil;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,13 +26,14 @@ import com.google.gson.JsonSyntaxException;
 import br.com.android_e_commerce_paypal_master.R;
 import br.com.android_e_commerce_paypal_master.model.ErrorResponse;
 import br.com.android_e_commerce_paypal_master.networking.ApiClient;
+import br.com.android_e_commerce_paypal_master.ui.login.LoginActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-//    private static ApiClient mApi;
+    private static ApiClient mApi;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
 
@@ -133,5 +136,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
+    }
+    public void inciarTelaAbertura(Activity activity) {
+        Intent intent = new Intent(activity, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

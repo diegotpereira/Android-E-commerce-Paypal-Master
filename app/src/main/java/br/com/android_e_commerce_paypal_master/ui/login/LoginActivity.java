@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import br.com.android_e_commerce_paypal_master.R;
+import br.com.android_e_commerce_paypal_master.db.AppBancoDados;
+import br.com.android_e_commerce_paypal_master.db.AppRef;
 import br.com.android_e_commerce_paypal_master.db.model.User;
 import br.com.android_e_commerce_paypal_master.networking.model.LoginRequest;
 import br.com.android_e_commerce_paypal_master.ui.base.BaseActivity;
@@ -77,11 +79,15 @@ public class LoginActivity extends BaseActivity {
 
                     return;
                 }
+                AppBancoDados.salvarUsuario(response.body());
+                AppRef.getInstance().salvarAuthToken(response.body().token);
+                inciarTelaAbertura(LoginActivity.this);
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                loader.setVisibility(View.INVISIBLE);
+                handleError(t);
             }
         });
     }
